@@ -21,3 +21,25 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+*.bak
+.adf
+.data
+.idea
+**/.classpath
+**/.project
+**/.settings
+**/build
+**/dist
+**/nbproject
+**/target
+**/*.log
+**/nb-configuration.xml
+**/rebel.xml
+**/rebel-remote.xml
+.gradle
+**/*.iml
+**/.factorypath
+buildSrc
+**/.idea
+**/Debug

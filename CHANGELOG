@@ -1,0 +1,30 @@
+# Changelog
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+## [0.9.3] - 2022-04-04
+### Changed
+- uptake javamelody 1.91.0
+- uptake maven plugins
+
+## [0.9.2] - 2022-01-31
+### Added
+- 2 tests
+
+### Changed
+- cleanup samples
+- uptake apache fop 2.7
+- uptake javamelody 1.90.0
+
+## [0.9.1] - 2022-01-28
+### Added
+- initial version
+- apache fop 2.6
+
+[Unreleased]: http://gitlab.pdv.lan/oliver1/fop4apex/compare/0.9.3...master
+[0.9.3]: http://gitlab.pdv.lan/oliver1/fop4apex/compare/0.9.2...0.9.3
+[0.9.2]: hhttp://gitlab.pdv.lan/oliver1/fop4apex/-/tags/0.9.2
