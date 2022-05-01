@@ -25,5 +25,5 @@ jobs:
         distribution: ${{ matrix.distribution }}
         java-version: ${{ matrix.java }}
         cache: maven
-    - name: Build and verify with Maven
-      run: mvn -B package verify --file pom.xml
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml
