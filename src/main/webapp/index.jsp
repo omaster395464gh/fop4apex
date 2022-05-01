@@ -83,7 +83,7 @@ os.name:          ${System.getProperty("os.name")}
 os.version:       ${System.getProperty("os.version")}
 file.encoding:    ${System.getProperty("file.encoding")}
 sun.jnu.encoding: ${System.getProperty("sun.jnu.encoding")}</pre>
-    <p>page build with <a href="https://picocss.com/">Pico.css</a>, fop conversion with <a href="https://xmlgraphics.apache.org/fop/">Apache FOP</a> </p>
+    <p>page built with <a href="https://picocss.com/">Pico.css</a>, fop conversion with <a href="https://xmlgraphics.apache.org/fop/">Apache FOP</a> </p>
 </main>
 </body>
 </html>
