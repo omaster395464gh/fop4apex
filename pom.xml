@@ -6,7 +6,7 @@
 
     <groupId>de.pdv.apex</groupId>
     <artifactId>fop4apex</artifactId>
-    <version>0.9.6</version>
+    <version>0.9.7</version>
     <name>fop4apex</name>
     <packaging>war</packaging>
     <url>https://www.pdv.de</url>
