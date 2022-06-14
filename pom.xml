@@ -6,7 +6,7 @@
 
     <groupId>de.pdv.apex</groupId>
     <artifactId>fop4apex</artifactId>
-    <version>0.9.7</version>
+    <version>0.9.8</version>
     <name>fop4apex</name>
     <packaging>war</packaging>
     <url>https://www.pdv.de</url>
@@ -66,6 +66,7 @@
             <groupId>org.webjars.bowergithub.picocss</groupId>
             <artifactId>pico</artifactId>
             <version>1.5.0</version>
+            <scope>compile</scope>
         </dependency>
 
         <!-- Start: Security fixes -->
