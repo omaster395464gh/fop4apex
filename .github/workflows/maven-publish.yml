@@ -1,18 +1,19 @@
 # This workflow will build a package using Maven and then publish it to GitHub packages when a release is created
 # For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#apache-maven-with-a-settings-path
+# https://stackoverflow.com/questions/58879480/how-to-automate-versioning-of-maven-project-in-github
 
-name: Maven Package
+name: Publish maven package to Github Packages
 
-on:  
-  push:
-    tags:
-      - '*'
+# on:
+#  push:
+#    tags:
+#      - '*'
 # on:
 #  push:
 #    branches: [main]
-#on:
-#  release:
-#    types: [created]
+on:
+  release:
+    types: [created]
 
 jobs:
   build:
@@ -31,7 +32,10 @@ jobs:
         distribution: 'temurin'
         server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
         settings-path: ${{ github.workspace }} # location for the settings.xml file
-
+    - if: github.event.release
+      name: Update version in pom.xml (Release only)
+      run: mvn -B versions:set -DnewVersion=${{ github.event.release.tag_name }} -DgenerateBackupPoms=false
+    -
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 

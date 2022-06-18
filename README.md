@@ -20,6 +20,10 @@ https://github.com/javamelody/javamelody/wiki
 * check dependent libraries for updates
 * run tests and build
 
+## Release
+* create a tag with version number
+* create a github release
+
 ## Installation
 * rename target/fop4apex*.war to fop4apex.war
 * copy fop4apex.war to tomcat webapps folder
