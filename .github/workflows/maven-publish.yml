@@ -2,7 +2,7 @@
 # For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#apache-maven-with-a-settings-path
 # https://stackoverflow.com/questions/58879480/how-to-automate-versioning-of-maven-project-in-github
 
-name: Publish maven package to Github Packages
+name: Publish maven package
 
 # on:
 #  push:
@@ -34,7 +34,7 @@ jobs:
         settings-path: ${{ github.workspace }} # location for the settings.xml file
     - if: github.event.release
       name: Update version in pom.xml (Release only)
-      run: mvn -B versions:set -DnewVersion=${{ github.event.release.tag_name }} -DgenerateBackupPoms=false
+      run: mvn -B versions:set -DnewVersion="${{ github.event.release.tag_name }}" -DgenerateBackupPoms=false
     - name: Build with Maven
       run: mvn -B package --file pom.xml
     - name: Publish to GitHub Packages Apache Maven
