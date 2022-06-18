@@ -6,7 +6,7 @@
 
     <groupId>de.pdv.apex</groupId>
     <artifactId>fop4apex</artifactId>
-    <version>0.9.9-SNAPSHOT</version>
+    <version>0.9.10-SNAPSHOT</version>
     <name>fop4apex</name>
     <packaging>war</packaging>
     <url>https://www.pdv.de</url>
@@ -105,6 +105,7 @@
             </plugin>
 
             <!-- https://mvnrepository.com/artifact/org.owasp/dependency-check-maven -->
+            <!--
             <plugin>
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
@@ -117,6 +118,7 @@
                     </execution>
                 </executions>
             </plugin>
+            -->
 
             <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-surefire-plugin -->
             <plugin>
