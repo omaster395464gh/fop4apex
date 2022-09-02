@@ -5,6 +5,7 @@ import org.apache.fop.apps.Fop;
 import org.apache.fop.apps.FopFactory;
 import org.apache.fop.apps.MimeConstants;
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import javax.xml.transform.Result;
@@ -82,6 +83,7 @@ class ExampleXML2PDFTest {
         PDDocument document = PDDocument.load(pdfFile);
         System.out.println("Pages: " + document.getNumberOfPages());
         System.out.println("Filesize (Bytes): " + Files.size(pdfFile.toPath()));
+        Assertions.assertEquals(Integer.valueOf(1).intValue(), document.getNumberOfPages());
         System.out.println("Success!");
     }
 }

@@ -3,10 +3,9 @@ package de.pdv.apex;
 import org.apache.fop.apps.FOUserAgent;
 import org.apache.fop.apps.Fop;
 import org.apache.fop.apps.FopFactory;
-import org.apache.fop.apps.MimeConstants;
+import static org.apache.xmlgraphics.util.MimeConstants.MIME_PDF;
 
 import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +16,9 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.stream.StreamSource;
-import java.io.*;
+import java.io.File;
+import java.io.InputStream;
+import java.io.StringReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,9 +32,6 @@ public class PdfServlet extends HttpServlet {
 
     private final TransformerFactory tFactory = TransformerFactory.newInstance();
 
-    public void init() {
-    }
-
     // <editor-fold default state="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 
     /**
@@ -43,8 +41,7 @@ public class PdfServlet extends HttpServlet {
      * @param response servlet response
      */
         @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-                throws ServletException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         logger.log(Level.FINEST,"Finest output");
         logger.log(Level.FINER,"Finer output");
         logger.log(Level.FINE,"Fine output");
@@ -52,9 +49,8 @@ public class PdfServlet extends HttpServlet {
         logger.log(Level.INFO,"doGet");
         try {
             response.setContentType("application/pdf");
-            // response.setDateHeader("Expires", System.currentTimeMillis() + cacheExpiringDuration * 1000);
             FopFactory fopFactory = FopFactory.newInstance(new File(".").toURI());
-            Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, response.getOutputStream());
+            Fop fop = fopFactory.newFop(MIME_PDF, response.getOutputStream());
             Transformer transformer = tFactory.newTransformer();
             InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("samples/helloWorld.fo");
             Source src = new StreamSource(inputStream);
@@ -62,21 +58,18 @@ public class PdfServlet extends HttpServlet {
             transformer.transform(src, res);
             logger.log(Level.INFO,"Process complete");
         } catch (Exception ex) {
-            throw new ServletException(ex);
+            logger.log(Level.SEVERE,String.format("Error while processing fop transformation %s", ex.getMessage()));
         }
     }
-
 
     /**
      * Handles the HTTP <code>POST</code> method.
      *
      * @param request  servlet request
      * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         ServletContext context = getServletContext();
         logger.log(Level.FINEST,"Finest output");
         logger.log(Level.FINER,"Finer output");
@@ -87,29 +80,30 @@ public class PdfServlet extends HttpServlet {
             String contentType = request.getContentType();
             String templateFile = "template.fo";
             String templateData = "xml data";
-            // String pdfFileName = "";
 
             if (request.getParameter("template") != null)
                 templateFile = request.getParameter("template");
             if (request.getParameter("xml") != null)
                 templateData = request.getParameter("xml");
-            logger.log(Level.FINEST,"Working directory: " + (new File("dummy1.txt")).getAbsolutePath());
-            logger.log(Level.FINEST,"Template file: " + templateFile);
-            logger.log(Level.FINEST,"Template data: " + templateData);
-            logger.log(Level.FINEST,"Content type: " + contentType);
+
+            if (logger.isLoggable(Level.FINEST)) {
+                logger.log(Level.FINEST, String.format("Working directory: %s", new File("dummy1.txt").getAbsolutePath()));
+                logger.log(Level.FINEST, String.format("Template file: %s", templateFile));
+                logger.log(Level.FINEST, String.format("Template data: %s", templateData));
+                logger.log(Level.FINEST, String.format("Content type:  %s", contentType));
+            }
 
             String pdfFileName = "Kostenblatt.pdf";
             response.setContentType("application/pdf");
             response.setHeader("Content-disposition", "attachment; filename=" + pdfFileName);
-            // response.setDateHeader("Expires", System.currentTimeMillis() + cacheExpiringDuration * 1000);
+
             FopFactory fopFactory = FopFactory.newInstance(new File(".").toURI());
+
             FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
             // Construct fop with desired output format
-            Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, foUserAgent, response.getOutputStream());
+            Fop fop = fopFactory.newFop(MIME_PDF, foUserAgent, response.getOutputStream());
 
-            // Setup XSLT
-            TransformerFactory factory = TransformerFactory.newInstance();
-            Transformer transformer = factory.newTransformer( new StreamSource(new StringReader(templateFile)));
+            Transformer transformer = tFactory.newTransformer( new StreamSource(new StringReader(templateFile)));
             // Set the value of a <param> in the stylesheet
             transformer.setParameter("versionParam", "2.0");
 
@@ -123,11 +117,10 @@ public class PdfServlet extends HttpServlet {
             transformer.transform(src, res);
             logger.log(Level.INFO,"Process complete");
 
-        } catch (Exception e) {
-            context.log(e.getMessage(), e);
-            throw new ServletException(e.getMessage());
+        } catch (Exception ex) {
+            context.log(ex.getMessage(), ex);
+            logger.log(Level.SEVERE,String.format("Error while processing fop transformation %s", ex.getMessage()));
         }
-        // processRequest(request, response);
     }
 
     /**
@@ -139,9 +132,5 @@ public class PdfServlet extends HttpServlet {
     public String getServletInfo() {
         return "APEX FOP Server";
     }// </editor-fold>
-
-    @Override
-    public void destroy() {
-    }
 
 }

@@ -4,8 +4,10 @@ import org.apache.fop.apps.*;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.apache.pdfbox.text.PDFTextStripperByArea;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import javax.xml.XMLConstants;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -46,6 +48,7 @@ class ExampleFO2PDFTest {
 
             // Setup JAXP using identity transformer
             TransformerFactory factory = TransformerFactory.newInstance();
+            factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
             Transformer transformer = factory.newTransformer(); // identity transformer
 
             // Setup input stream
@@ -106,17 +109,18 @@ class ExampleFO2PDFTest {
             throw new Exception("result file missing");
 
         try (PDDocument document = PDDocument.load(pdfFile)) {
-            document.getClass();
+            //document.getClass();
             if (!document.isEncrypted()) {
                 PDFTextStripperByArea stripper = new PDFTextStripperByArea();
                 stripper.setSortByPosition(true);
                 PDFTextStripper tStripper = new PDFTextStripper();
                 String pdfFileInText = tStripper.getText(document);
-                String lines[] = pdfFileInText.split("\\r?\\n");
+                String[] lines = pdfFileInText.split("\\r?\\n");
                 for (String line : lines) {
                     System.out.println(line);
                 }
                 System.out.println("Pages: " + document.getNumberOfPages());
+                Assertions.assertEquals(Integer.valueOf(1).intValue(), document.getNumberOfPages());
             }
         }
         System.out.println("Filesize (Bytes): " + Files.size(pdfFile.toPath()));

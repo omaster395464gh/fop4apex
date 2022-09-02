@@ -6,7 +6,7 @@
 
     <groupId>de.pdv.apex</groupId>
     <artifactId>fop4apex</artifactId>
-    <version>0.9.10-SNAPSHOT</version>
+    <version>0.10.1-SNAPSHOT</version>
     <name>fop4apex</name>
     <packaging>war</packaging>
     <url>https://www.pdv.de</url>
@@ -24,6 +24,12 @@
             <artifactId>javax.servlet-api</artifactId>
             <version>4.0.1</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -44,6 +50,14 @@
             <version>2.0.26</version>
             <scope>test</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>4.7.0</version>
+            <scope>test</scope>
+        </dependency>
+
 
         <!-- https://mvnrepository.com/artifact/org.apache.xmlgraphics/fop-core -->
         <dependency>
@@ -104,22 +118,6 @@
                 <version>3.3.2</version>
             </plugin>
 
-            <!-- https://mvnrepository.com/artifact/org.owasp/dependency-check-maven -->
-            <!--
-            <plugin>
-                <groupId>org.owasp</groupId>
-                <artifactId>dependency-check-maven</artifactId>
-                <version>7.1.1</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            -->
-
             <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-surefire-plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -157,24 +155,23 @@
             </plugin>
 
             <!-- https://mvnrepository.com/artifact/com.google.cloud.tools/jib-maven-plugin -->
-            <!--
-                <plugin>
-                    <groupId>com.google.cloud.tools</groupId>
-                    <artifactId>jib-maven-plugin</artifactId>
-                    <version>3.2.1</version>
-                    <configuration>
-                        <from>
-                            <image>compile.pdv.lan:8001/product/base/vis-tomcat:9.0</image>
-                        </from>
-                        <to>
-                            <image>fop4apex</image>
-                        </to>
-                        <container>
-                            <appRoot>/opt/pdv/webapps/fop4apex</appRoot>
-                        </container>
-                    </configuration>
-                </plugin>
-            -->
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>3.2.1</version>
+                <configuration>
+                    <from>
+                        <image>compile.pdv.lan:8001/product/base/vis-tomcat:9.0</image>
+                    </from>
+                    <to>
+                        <image>fop4apex</image>
+                    </to>
+                    <container>
+                        <appRoot>/opt/pdv/webapps/fop4apex</appRoot>
+                    </container>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
     <distributionManagement>

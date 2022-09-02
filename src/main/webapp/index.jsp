@@ -9,23 +9,19 @@
 </head>
 <body>
 <main class="container">
-    <hgroup>
+    <header>
         <h1>Apache FOP integration for Oracle APEX</h1>
-        <h2>FOP = Formatting Objects Processor</h2>
-    </hgroup>
+        <p>FOP = Formatting Objects Processor</p>
+    </header>
     <ul>
         <li>Demo: <a href="pdf" data-tooltip="Run pdf servlet with demo data">pdf servlet / fo2pdf</a></li>
         <li>Monitoring: <a href="monitoring" data-tooltip="Go to JavaMelody Monitoring page">JavaMelody</a></li>
     </ul>
-
-    <!-- <a href="pdf">pdf Servlet / Hello World / fo2pdf</a><br/> -->
-    <%--suppress HtmlUnknownTarget --%>
-    <!-- <a href="monitoring">JavaMelody Monitoring</a> -->
-    <hgroup>
+    <header>
         <h2>Sample APEX Settings</h2>
-        <h3>Internal Workspace / Instance Settings / Report Printing</h3>
-    </hgroup>
+    </header>
     <table role="grid">
+        <caption>Internal Workspace / Instance Settings / Report Printing</caption>
         <thead>
         <tr>
             <th scope="col">Parameter</th>
@@ -58,10 +54,10 @@
         </tr>
     </table>
 
-    <hgroup>
+    <header>
         <h2>Debugging</h2>
-        <h3>Add to tomcat conf/logging.properties</h3>
-    </hgroup>
+        <p>Add to tomcat conf/logging.properties</p>
+    </header>
     <pre>org.apache.tomcat.util.http.Parameters.level = ALL
 de.pdv.apex.level = ALL</pre>
 
