@@ -1,8 +1,9 @@
 package de.pdv.apex;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -17,25 +18,26 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 
-public class PdfServletTest extends Mockito {
+class PdfServletTest extends Mockito {
     @Spy  private PdfServlet servlet;
     @Mock private ServletConfig servletConfig;
     @Mock private HttpServletRequest request;
     @Mock private HttpServletResponse response;
     @Mock private ServletOutputStream outputStream;
-    @Before
+
+    @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void assertThatNoMethodHasBeenCalled() {
+    void assertThatNoMethodHasBeenCalled() {
         when(servlet.getServletConfig()).thenReturn(servletConfig);
         Mockito.verifyNoInteractions(servlet);
     }
 
     @Test
-    public void testServletGet() throws Exception {
+    void doGet() throws Exception {
         when(servlet.getServletConfig()).thenReturn(servletConfig);
         when(response.getOutputStream()).thenReturn(outputStream);
         when(response.getWriter()).thenReturn(new PrintWriter(new StringWriter()));
@@ -47,7 +49,7 @@ public class PdfServletTest extends Mockito {
     }
 
     @Test
-    public void testServletPost() throws Exception {
+    void doPost() throws Exception {
         PdfServletTest app = new PdfServletTest();
         InputStream xsltFile = app.getClass().getClassLoader().getResourceAsStream("samples/kostenblatt_2014.xsl");
         assert xsltFile != null;
@@ -67,4 +69,16 @@ public class PdfServletTest extends Mockito {
         System.out.println("Success!");
     }
 
+    @Test
+    void init() {
+        when(servlet.getServletConfig()).thenReturn(servletConfig);
+        servlet.init();
+    }
+
+    @Test
+    void getServletInfo() {
+        when(servlet.getServletConfig()).thenReturn(servletConfig);
+        String s = servlet.getServletInfo();
+        Assertions.assertEquals("APEX FOP Server",s);
+    }
 }

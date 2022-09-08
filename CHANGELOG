@@ -6,9 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.10.2] - 2022-09-09
+### Changed
+- remove junit 4
+- remove xalan 2.7.2
+
 ## [0.10.1] - 2022-09-02
 ### Changed
-- fixes for sonarcube ce scan results
+- fixes for sonarqube ce scan results
 - add units tests for servlet with mokito
 
 ## [0.9.9] - 2022-06-18

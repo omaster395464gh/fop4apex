@@ -10,10 +10,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.XMLConstants;
+import javax.xml.transform.*;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.File;
@@ -30,9 +28,22 @@ import java.util.logging.Logger;
 public class PdfServlet extends HttpServlet {
     private static final Logger logger = Logger.getLogger(PdfServlet.class.getName());
 
-    private final TransformerFactory tFactory = TransformerFactory.newInstance();
+    private static final TransformerFactory tFactory = TransformerFactory.newInstance();
 
-    // <editor-fold default state="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Init the servlet and setup TransformerFactory
+     */
+    @Override
+    public void init() {
+        try {
+            tFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+            tFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+            tFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+            logger.info("TransformerFactory configured with FEATURE_SECURE_PROCESSING and without ACCESS_EXTERNAL_DTD/ACCESS_EXTERNAL_STYLESHEET");
+        } catch (TransformerConfigurationException e) {
+            logger.warning(String.format("TransformerConfigurationException while setup TransformerFactory - possible security issue: %s", e.getMessage()));
+        }
+    }
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -40,7 +51,7 @@ public class PdfServlet extends HttpServlet {
      * @param request  servlet request
      * @param response servlet response
      */
-        @Override
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         logger.log(Level.FINEST,"Finest output");
         logger.log(Level.FINER,"Finer output");
@@ -102,7 +113,6 @@ public class PdfServlet extends HttpServlet {
             FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
             // Construct fop with desired output format
             Fop fop = fopFactory.newFop(MIME_PDF, foUserAgent, response.getOutputStream());
-
             Transformer transformer = tFactory.newTransformer( new StreamSource(new StringReader(templateFile)));
             // Set the value of a <param> in the stylesheet
             transformer.setParameter("versionParam", "2.0");
