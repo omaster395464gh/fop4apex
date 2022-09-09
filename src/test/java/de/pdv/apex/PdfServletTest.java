@@ -70,14 +70,6 @@ class PdfServletTest extends Mockito {
     }
 
     @Test
-    void init() {
-        when(servlet.getServletConfig()).thenReturn(servletConfig);
-        assertNotNull(servlet);
-        servlet.init();
-        assertDoesNotThrow( () -> servlet.init());
-    }
-
-    @Test
     void getServletInfo() {
         when(servlet.getServletConfig()).thenReturn(servletConfig);
         String s = servlet.getServletInfo();

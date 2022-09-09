@@ -10,7 +10,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.XMLConstants;
 import javax.xml.transform.*;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.stream.StreamSource;
@@ -29,21 +28,6 @@ public class PdfServlet extends HttpServlet {
     private static final Logger logger = Logger.getLogger(PdfServlet.class.getName());
 
     private static final TransformerFactory tFactory = TransformerFactory.newInstance();
-
-    /**
-     * Init the servlet and setup TransformerFactory
-     */
-    @Override
-    public void init() {
-        try {
-            tFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-            tFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-            tFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
-            logger.info("TransformerFactory configured with FEATURE_SECURE_PROCESSING and without ACCESS_EXTERNAL_DTD/ACCESS_EXTERNAL_STYLESHEET");
-        } catch (TransformerConfigurationException e) {
-            logger.warning(String.format("TransformerConfigurationException while setup TransformerFactory - possible security issue: %s", e.getMessage()));
-        }
-    }
 
     /**
      * Handles the HTTP <code>GET</code> method.
