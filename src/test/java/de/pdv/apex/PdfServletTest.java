@@ -1,7 +1,7 @@
 package de.pdv.apex;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -53,10 +53,10 @@ class PdfServletTest extends Mockito {
         PdfServletTest app = new PdfServletTest();
         InputStream xsltFile = app.getClass().getClassLoader().getResourceAsStream("samples/kostenblatt_2014.xsl");
         assert xsltFile != null;
-        String xsltFileContent = IOUtils.toString(xsltFile, StandardCharsets.UTF_8.name());
+        String xsltFileContent = IOUtils.toString(xsltFile, StandardCharsets.UTF_8);
         InputStream xmlFile = app.getClass().getClassLoader().getResourceAsStream("samples/kostenblatt_2014.xml");
         assert xmlFile != null;
-        String xmlFileContent = IOUtils.toString(xmlFile, StandardCharsets.UTF_8.name());
+        String xmlFileContent = IOUtils.toString(xmlFile, StandardCharsets.UTF_8);
         when(servlet.getServletConfig()).thenReturn(servletConfig);
         when(response.getOutputStream()).thenReturn(outputStream);
         when(request.getParameter("template")).thenReturn(xsltFileContent);
@@ -72,13 +72,15 @@ class PdfServletTest extends Mockito {
     @Test
     void init() {
         when(servlet.getServletConfig()).thenReturn(servletConfig);
+        assertNotNull(servlet);
         servlet.init();
+        assertDoesNotThrow( () -> servlet.init());
     }
 
     @Test
     void getServletInfo() {
         when(servlet.getServletConfig()).thenReturn(servletConfig);
         String s = servlet.getServletInfo();
-        Assertions.assertEquals("APEX FOP Server",s);
+        assertEquals("APEX FOP Server",s);
     }
 }

@@ -99,8 +99,8 @@ public class PdfServlet extends HttpServlet {
 
             if (logger.isLoggable(Level.FINEST)) {
                 logger.log(Level.FINEST, String.format("Working directory: %s", new File("dummy1.txt").getAbsolutePath()));
-                logger.log(Level.FINEST, String.format("Template file: %s", templateFile));
-                logger.log(Level.FINEST, String.format("Template data: %s", templateData));
+                logger.log(Level.FINEST, String.format("Template file length: %s", templateFile.length()));
+                logger.log(Level.FINEST, String.format("Template data length: %s", templateData.length()));
                 logger.log(Level.FINEST, String.format("Content type:  %s", contentType));
             }
 
