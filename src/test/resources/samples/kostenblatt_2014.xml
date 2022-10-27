@@ -345,7 +345,7 @@
             <FUNK>0,00</FUNK>
             <DATEN>A15</DATEN>
             <DATEN_NO>15</DATEN_NO>
-            <EINSATZ>ÃƒÂ–l nachgefÃƒÂ¼llt</EINSATZ>
+            <EINSATZ>Öl nachgefüllt</EINSATZ>
             <EINHEIT>(l)</EINHEIT>
             <JAN>0,00</JAN>
             <FEB>0,00</FEB>
@@ -385,7 +385,7 @@
             <FUNK>0,00</FUNK>
             <DATEN>A16</DATEN>
             <DATEN_NO>16</DATEN_NO>
-            <EINSATZ>ÃƒÂ–l bezahlt</EINSATZ>
+            <EINSATZ>Öl bezahlt</EINSATZ>
             <EINHEIT>(EUR)</EINHEIT>
             <JAN>0,00</JAN>
             <FEB>0,00</FEB>
@@ -465,7 +465,7 @@
             <FUNK>0,00</FUNK>
             <DATEN>A18</DATEN>
             <DATEN_NO>18</DATEN_NO>
-            <EINSATZ>Kosten ZubehÃƒÂ¶r</EINSATZ>
+            <EINSATZ>Kosten Zubehör</EINSATZ>
             <EINHEIT>(EUR)</EINHEIT>
             <JAN>38,56</JAN>
             <FEB>0,00</FEB>
