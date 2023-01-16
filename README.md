@@ -8,7 +8,7 @@ Fahrdienst-Anwendung / Kostenblatt
 https://xmlgraphics.apache.org/fop/
 * Uses JavaMelody for monitoring
 https://github.com/javamelody/javamelody/wiki
-* Use Java 8 LTS (also tested with Java 17 and Java 11)
+* Use Java 11 LTS (also tested with Java 17)
  
 ## Run tests
 `mvn test`
