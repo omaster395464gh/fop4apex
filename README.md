@@ -2,7 +2,7 @@
 
 Servlet for Oracle APEX to run PDF Reports based on Apache FOP
 
-Fahrdienst-Anwendung / Kostenblatt 
+Fahrdienst-Anwendung + Kostenblatt
 
 * Uses Apache FOP for rendering
 https://xmlgraphics.apache.org/fop/
