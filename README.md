@@ -9,7 +9,8 @@ https://xmlgraphics.apache.org/fop/
 * Uses JavaMelody for monitoring
 https://github.com/javamelody/javamelody/wiki
 * Use Java 11 LTS (also tested with Java 17)
- 
+* Use Tomcat 10.1.x (Jakarta EE) 
+
 ## Run tests
 `mvn test`
 
