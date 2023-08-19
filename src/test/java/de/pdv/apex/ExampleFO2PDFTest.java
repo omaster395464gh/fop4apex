@@ -1,6 +1,7 @@
 package de.pdv.apex;
 
 import org.apache.fop.apps.*;
+import org.apache.pdfbox.io.RandomAccessReadBufferedFile;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.apache.pdfbox.text.PDFTextStripperByArea;
@@ -17,6 +18,7 @@ import javax.xml.transform.stream.StreamSource;
 import java.io.*;
 import java.nio.file.Files;
 import java.util.List;
+import org.apache.pdfbox.Loader;
 
 class ExampleFO2PDFTest {
 
@@ -110,8 +112,8 @@ class ExampleFO2PDFTest {
         if (!pdfFile.exists())
             throw new Exception("result file missing");
 
-        try (PDDocument document = PDDocument.load(pdfFile)) {
-            //document.getClass();
+        try (PDDocument document = Loader.loadPDF(new RandomAccessReadBufferedFile(pdfFile)))
+        {
             if (!document.isEncrypted()) {
                 PDFTextStripperByArea stripper = new PDFTextStripperByArea();
                 stripper.setSortByPosition(true);
@@ -124,6 +126,11 @@ class ExampleFO2PDFTest {
                 System.out.println("Pages: " + document.getNumberOfPages());
                 Assertions.assertEquals(Integer.valueOf(1).intValue(), document.getNumberOfPages());
             }
+            /*
+            for (PDPage page : document.getPages())
+            {
+            ....
+            }*/
         }
         System.out.println("Filesize (Bytes): " + Files.size(pdfFile.toPath()));
         System.out.println("Success!");
