@@ -4,6 +4,8 @@ import org.apache.fop.apps.FOUserAgent;
 import org.apache.fop.apps.Fop;
 import org.apache.fop.apps.FopFactory;
 import org.apache.fop.apps.MimeConstants;
+import org.apache.pdfbox.Loader;
+import org.apache.pdfbox.io.RandomAccessReadBufferedFile;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -19,6 +21,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 
 class ExampleXML2PDFTest {
 
@@ -53,8 +56,7 @@ class ExampleXML2PDFTest {
         // configure foUserAgent as desired
 
         // Setup output
-        OutputStream out = new java.io.FileOutputStream(pdfFile);
-        out = new java.io.BufferedOutputStream(out);
+        OutputStream out = Files.newOutputStream(Paths.get(pdfFile.toURI()));
 
         // Construct fop with desired output format
         Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, foUserAgent, out);
@@ -84,11 +86,11 @@ class ExampleXML2PDFTest {
 
         if (!pdfFile.exists())
             throw new Exception("result file missing");
-
-        PDDocument document = PDDocument.load(pdfFile);
-        System.out.println("Pages: " + document.getNumberOfPages());
-        System.out.println("Filesize (Bytes): " + Files.size(pdfFile.toPath()));
-        Assertions.assertEquals(Integer.valueOf(1).intValue(), document.getNumberOfPages());
-        System.out.println("Success!");
+        try (PDDocument document = Loader.loadPDF(new RandomAccessReadBufferedFile(pdfFile))) {
+            System.out.println("Pages: " + document.getNumberOfPages());
+            System.out.println("Filesize (Bytes): " + Files.size(pdfFile.toPath()));
+            Assertions.assertEquals(Integer.valueOf(1).intValue(), document.getNumberOfPages());
+            System.out.println("Success!");
+        }
     }
 }
