@@ -6,7 +6,7 @@
 
     <groupId>de.pdv.apex</groupId>
     <artifactId>fop4apex</artifactId>
-    <version>0.13.1-SNAPSHOT</version>
+    <version>0.13.3-SNAPSHOT</version>
     <name>fop4apex</name>
     <packaging>war</packaging>
     <url>https://www.pdv.de</url>
@@ -142,6 +142,17 @@
                     <outputName>bom</outputName>
                 </configuration>
             </plugin>
+            <!-- Avoid plugin validation warnings -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
+            </plugin>
 
             <!-- https://mvnrepository.com/artifact/com.google.cloud.tools/jib-maven-plugin -->
             <plugin>
@@ -150,17 +161,22 @@
                 <version>3.4.0</version>
                 <configuration>
                     <from>
-                        <image>compile.pdv.lan:8001/product/base/vis-tomcat:9.0</image>
+                        <image>jetty:10-jre17-alpine</image>
+                        <!-- jetty:10-jre17-eclipse-temurin -->
                     </from>
                     <to>
                         <image>fop4apex</image>
                     </to>
                     <container>
-                        <appRoot>/opt/pdv/webapps/fop4apex</appRoot>
+                        <entrypoint>java,-jar,/usr/local/jetty/start.jar</entrypoint>
                     </container>
                 </configuration>
             </plugin>
-
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>10.0.17</version>
+            </plugin>
         </plugins>
     </build>
     <profiles>

@@ -42,7 +42,7 @@ org.apache.tomcat.util.http.Parameters.level = ALL
 de.pdv.apex.level = ALL
 ```
 
-### Deploy to tomcat 9.x (IntelliJ / Netbeans)
+### Deploy to tomcat 9.x (IntelliJ / Netbeans) / Jetty 10.x
 Run http://localhost:port/
 
 Example:
