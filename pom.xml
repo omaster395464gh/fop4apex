@@ -17,7 +17,7 @@
         <maven.compiler.source>11</maven.compiler.source>
         <junit.version>5.10.1</junit.version>
         <batik.version>1.16</batik.version>
-        <pdfbox.version>3.0.0</pdfbox.version>
+        <pdfbox.version>3.0.1</pdfbox.version>
         <sonar.organization>omaster395464gh</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
