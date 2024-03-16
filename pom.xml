@@ -83,7 +83,7 @@
         <dependency>
             <groupId>net.bull.javamelody</groupId>
             <artifactId>javamelody-core</artifactId>
-            <version>1.95.0</version>
+            <version>1.98.0</version>
             <scope>compile</scope>
         </dependency>
 
@@ -218,8 +218,9 @@
                     <plugin>
                         <groupId>org.owasp</groupId>
                         <artifactId>dependency-check-maven</artifactId>
-                        <version>9.0.9</version>
+                        <version>9.0.10</version>
                         <configuration>
+                            <nvdApiServerId>nvd</nvdApiServerId>
                             <formats>
                                 <format>html</format>
                                 <format>json</format>
