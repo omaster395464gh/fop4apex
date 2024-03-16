@@ -49,3 +49,12 @@ Example:
 * http://localhost:8080/fop4apex_war_exploded/
 * http://localhost:8080/fop4apex_war_exploded/monitoring
 
+## Conversion using Apache fop (windows powershell)
+```
+$env:PATH="c:\Users\oliver1\Downloads\_tools\fop-2.9\fop;$env:PATH"
+cd src\test\ressources\samples
+fop.cmd  -xsl kostenblatt_2014.xsl    -xml kostenblatt_2014.xml    -pdf Result2014.pdf
+fop.cmd  -xsl kostenblatt_2023_vh.xsl -xml kostenblatt_2023_vh.xml -pdf Result2023_vh.pdf
+fop.cmd  -xsl kostenblatt_2023_e.xsl  -xml kostenblatt_2023_e.xml  -pdf Result2023_e.pdf
+start Result.pdf
+```
