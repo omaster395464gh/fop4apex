@@ -9,9 +9,11 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "daily"
-        target-branch: "main"
+    target-branch: "main"
   - package-ecosystem: "maven" # See documentation for possible values
     directory: "/" # Location of package manifests
     schedule:
       interval: "daily"
-        target-branch: "SERVLET60"
+    target-branch: "SERVLET60"
+    labels:
+    - "servlet60"
