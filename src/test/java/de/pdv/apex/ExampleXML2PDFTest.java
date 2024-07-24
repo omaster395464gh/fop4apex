@@ -39,8 +39,8 @@ class ExampleXML2PDFTest {
 
         ExampleXML2PDFTest app = new ExampleXML2PDFTest();
         // Setup input and output files
-        InputStream xsltFile = app.getClass().getClassLoader().getResourceAsStream("samples/kostenblatt_2014.xsl");
-        InputStream xmlFile = app.getClass().getClassLoader().getResourceAsStream("samples/kostenblatt_2014.xml");
+        InputStream xsltFile = app.getClass().getClassLoader().getResourceAsStream("samples/kostenblatt_2023_e.xsl");
+        InputStream xmlFile = app.getClass().getClassLoader().getResourceAsStream("samples/kostenblatt_2023_e.xml");
         File pdfFile = new File(outDir, "ResultXML2PDF.pdf");
 
         System.out.println("Input: XML (" + xmlFile + ")");
