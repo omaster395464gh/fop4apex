@@ -126,11 +126,6 @@ class ExampleFO2PDFTest {
                 System.out.println("Pages: " + document.getNumberOfPages());
                 Assertions.assertEquals(Integer.valueOf(1).intValue(), document.getNumberOfPages());
             }
-            /*
-            for (PDPage page : document.getPages())
-            {
-            ....
-            }*/
         }
         System.out.println("Filesize (Bytes): " + Files.size(pdfFile.toPath()));
         System.out.println("Success!");
