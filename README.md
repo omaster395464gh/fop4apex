@@ -8,8 +8,8 @@ Fahrdienst-Anwendung / Kostenblatt
 https://xmlgraphics.apache.org/fop/
 * Uses JavaMelody for monitoring
 https://github.com/javamelody/javamelody/wiki
-* Use Java 11 LTS (also tested with Java 17 LTS and Java 21 LTS)
-* Use Tomcat 10.1.x (Jakarta EE) 
+* Use Java 17 LTS (also tested with Java 21 LTS)
+* Use Tomcat 10.1.x+ (Jakarta EE / Servlet 6.0)  or Jetty 12
 ## Run tests
 `mvn test`
 
@@ -42,7 +42,7 @@ org.apache.tomcat.util.http.Parameters.level = ALL
 de.pdv.apex.level = ALL
 ```
 
-### Deploy to tomcat 9.x (IntelliJ / Netbeans)
+### Deploy to tomcat 10.1.x+ or Jetty 12 (IntelliJ / Netbeans)
 Run http://localhost:port/
 
 Example:
