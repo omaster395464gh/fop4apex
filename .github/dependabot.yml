@@ -22,6 +22,6 @@ updates:
       interval: "daily"
     target-branch: "SERVLET60"
     labels:
-    - "servlet60"
+      - "servlet60"
     assignees:
       - omaster395464gh
