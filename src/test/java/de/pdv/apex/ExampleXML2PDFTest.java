@@ -84,8 +84,7 @@ class ExampleXML2PDFTest {
         //close
         out.close();
 
-        if (!pdfFile.exists())
-            throw new Exception("result file missing");
+        Assertions.assertTrue(pdfFile.exists(), "Error: result file missing");
         try (PDDocument document = Loader.loadPDF(new RandomAccessReadBufferedFile(pdfFile))) {
             System.out.println("Pages: " + document.getNumberOfPages());
             System.out.println("Filesize (Bytes): " + Files.size(pdfFile.toPath()));
