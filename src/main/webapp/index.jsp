@@ -1,10 +1,16 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="java.util.LinkedHashMap" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!doctype html>
 <html lang="en" data-theme="dark">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Apache Formatting Objects Processor integration for Oracle Application Express, converts xml and fop to pdf">
-    <link rel="stylesheet" href="webjars/pico/css/pico.min.css">
+    <meta http-equiv="Content-Type"  content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Apache Formatting Objects Processor integration for Oracle Application Express, converts xml and fop to pdf" />
+    <link rel="stylesheet" href="webjars/pico/css/pico.min.css" />
     <title>Apache FOP for Oracle APEX</title>
 </head>
 <body>
@@ -42,11 +48,11 @@
         </tr>
         <tr>
             <th scope="row">Port</th>
-            <td>8080</td>
+            <td><c:out value="${pageContext.request.serverPort}"/></td>
         </tr>
         <tr>
             <th scope="row">Script</th>
-            <td>${pageContext.request.contextPath}/pdf</td>
+            <td><c:out value="${pageContext.request.contextPath}"/>/pdf</td>
         </tr>
         <tr>
             <td>Timeout</td>
@@ -61,24 +67,42 @@
     <pre>org.apache.tomcat.util.http.Parameters.level = ALL
 de.pdv.apex.level = ALL</pre>
 
-    <h2>Server Info / Environment</h2>
 <%--@elvariable id="System" type=""--%>
-    <pre>
-Server Version:   <%= application.getServerInfo() %>
-Servlet Version:  <%= application.getMajorVersion() %>.<%= application.getMinorVersion() %>
-JSP Version:      <%= JspFactory.getDefaultFactory().getEngineInfo().getSpecificationVersion() %>
-Context Path:     ${pageContext.request.contextPath}
+<%
+    Map<String,String> systemProperties = new LinkedHashMap<>();
+    systemProperties.put("Server Version",application.getServerInfo());
+    systemProperties.put("Servlet Version",String.format("%d.%d",application.getMajorVersion(),application.getMinorVersion()));
+    systemProperties.put("JSP Version",JspFactory.getDefaultFactory().getEngineInfo().getSpecificationVersion());
+    systemProperties.put("Context Path", request.getContextPath() );
+    systemProperties.put("","");
+    systemProperties.put("java.version",System.getProperty("java.version"));
+    systemProperties.put("java.vm.vendor",System.getProperty("java.vm.vendor"));
+    systemProperties.put("user.country",System.getProperty("user.country"));
+    systemProperties.put("user.language",System.getProperty("user.language"));
+    systemProperties.put("user.name",System.getProperty("user.name"));
+    systemProperties.put("user.timezone",System.getProperty("user.timezone"));
+    systemProperties.put("os.name",System.getProperty("os.name"));
+    systemProperties.put("os.version",System.getProperty("os.version"));
+    systemProperties.put("file.encoding",System.getProperty("file.encoding"));
+    systemProperties.put("sun.jnu.encoding",System.getProperty("sun.jnu.encoding"));
+    request.setAttribute("systemProperties",systemProperties);
+%>
 
-java.version:     ${System.getProperty("java.version")}
-java.vm.vendor:   ${System.getProperty("java.vm.vendor")}
-user.country:     ${System.getProperty("user.country")}
-user.language:    ${System.getProperty("user.language")}
-user.name:        ${System.getProperty("user.name")}
-user.timezone:    ${System.getProperty("user.timezone")}
-os.name:          ${System.getProperty("os.name")}
-os.version:       ${System.getProperty("os.version")}
-file.encoding:    ${System.getProperty("file.encoding")}
-sun.jnu.encoding: ${System.getProperty("sun.jnu.encoding")}</pre>
+    <h2>Server Info / Environment</h2>
+    <table role="grid">
+        <thead>
+        <tr>
+            <th scope="col">Parameter</th>
+            <th scope="col">Value</th>
+        </tr>
+        </thead>
+        <c:forEach var="property" items="${systemProperties}">
+            <tr>
+                <th scope="row"><c:out value="${property.key}"/></th>
+                <td><c:out value="${property.value}"/></td>
+            </tr>
+        </c:forEach>
+    </table>
     <p>page built with <a href="https://picocss.com/">Pico.css</a>, fop conversion with <a href="https://xmlgraphics.apache.org/fop/">Apache FOP</a> </p>
 </main>
 </body>
