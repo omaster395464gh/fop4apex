@@ -95,6 +95,16 @@
             <scope>compile</scope>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.github.librepdf/openpdf -->
+        <!-- updates to 1.4 and 2.x currently not possible https://github.com/javamelody/javamelody/pull/1182 -->
+        <!-- Optional: support pdf export for javamelody
+        <dependency>
+            <groupId>com.github.librepdf</groupId>
+            <artifactId>openpdf</artifactId>
+            <version>1.3.43</version>
+        </dependency>
+        -->
+
     </dependencies>
 
     <build>
