@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/73b38692b1bb4fc6aa4090779bf6df8f)](https://app.codacy.com/gh/omaster395464gh/fop4apex?utm_source=github.com&utm_medium=referral&utm_content=omaster395464gh/fop4apex&utm_campaign=Badge_Grade)
 # fop4apex [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=omaster395464gh_fop4apex&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=omaster395464gh_fop4apex)[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=omaster395464gh_fop4apex&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=omaster395464gh_fop4apex)  
 
 Servlet for Oracle APEX to run PDF Reports based on Apache FOP
