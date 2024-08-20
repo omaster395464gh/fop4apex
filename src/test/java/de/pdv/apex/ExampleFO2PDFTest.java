@@ -109,8 +109,7 @@ class ExampleFO2PDFTest {
 
         app.convertFO2PDFHelper(inputStream, pdfFile);
 
-        if (!pdfFile.exists())
-            throw new Exception("result file missing");
+        Assertions.assertTrue(pdfFile.exists(), "Error: result file missing");
 
         try (PDDocument document = Loader.loadPDF(new RandomAccessReadBufferedFile(pdfFile)))
         {
