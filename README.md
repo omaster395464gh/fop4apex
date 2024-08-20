@@ -11,9 +11,11 @@ Fahrdienst-Anwendung / Kostenblatt
 * Use Java 11 LTS (also tested with Java 17 LTS and Java 21 LTS)
  
 ## Run tests
+
 `mvn test`
 
 ## Build
+
 `mvn package verify`
 
 ## Upgrade
