@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         distribution: [ 'temurin' ]
-        java: [ '17', '21', '25']
+        java: [ '17', '21' ]
     steps:
     - uses: actions/checkout@v3
     - name: Setup java
