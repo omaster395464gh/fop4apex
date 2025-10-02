@@ -34,18 +34,9 @@ class ExampleFO2PDFTest {
      */
     public void convertFO2PDFHelper(InputStream fo, File pdf) throws IOException {
 
-        OutputStream out = null;
+        FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
 
-        try {
-            FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
-            // configure foUserAgent as desired
-
-            // Setup output stream.  Note: Using BufferedOutputStream
-            // for performance reasons (helpful with FileOutputStreams).
-            out = new FileOutputStream(pdf);
-            out = new BufferedOutputStream(out);
-
-            // Construct fop with desired output format
+        try (OutputStream out = new BufferedOutputStream(new FileOutputStream(pdf))) {
             Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, foUserAgent, out);
 
             // Setup JAXP using identity transformer
@@ -77,12 +68,9 @@ class ExampleFO2PDFTest {
             System.out.println("Generated " + foResults.getPageCount() + " pages in total.");
 
         } catch (Exception e) {
-            e.printStackTrace(System.err);
-            System.exit(-1);
-        } finally {
-            assert out != null;
-            out.close();
+            throw new IOException("Error transforming FO to PDF", e);
         }
+
     }
 
     @Test
