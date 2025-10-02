@@ -70,7 +70,7 @@ class ExampleFO2PDFTest {
             for (Object pageSequence : pageSequences) {
                 PageSequenceResults pageSequenceResults = (PageSequenceResults) pageSequence;
                 System.out.println("PageSequence "
-                        + (String.valueOf(pageSequenceResults.getID()).length() > 0
+                        + (!String.valueOf(pageSequenceResults.getID()).isEmpty()
                         ? pageSequenceResults.getID() : "<no id>")
                         + " generated " + pageSequenceResults.getPageCount() + " pages.");
             }
@@ -123,7 +123,7 @@ class ExampleFO2PDFTest {
                     System.out.println(line);
                 }
                 System.out.println("Pages: " + document.getNumberOfPages());
-                Assertions.assertEquals(Integer.valueOf(1).intValue(), document.getNumberOfPages());
+                Assertions.assertEquals((int) 1, document.getNumberOfPages());
             }
         }
         System.out.println("Filesize (Bytes): " + Files.size(pdfFile.toPath()));
