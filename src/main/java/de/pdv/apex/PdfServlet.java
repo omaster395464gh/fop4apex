@@ -1,5 +1,6 @@
 package de.pdv.apex;
 
+import jakarta.servlet.ServletException;
 import org.apache.fop.apps.FOUserAgent;
 import org.apache.fop.apps.Fop;
 import org.apache.fop.apps.FopFactory;
@@ -27,22 +28,47 @@ import java.util.logging.Logger;
 @WebServlet(name = "pdf", urlPatterns = {"/pdf"})
 public class PdfServlet extends HttpServlet {
     private static final Logger logger = Logger.getLogger(PdfServlet.class.getName());
-
+    private static FopFactory fopFactory;
     private static final TransformerFactory tFactory = TransformerFactory.newInstance();
 
     /**
      * Init the servlet and setup TransformerFactory
      */
     @Override
-    public void init() {
+    public void init() throws ServletException {
+        // Java 25 may need old parser
+        System.setProperty("javax.xml.parsers.SAXParserFactory",
+                "com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl");
+        System.setProperty("org.xml.sax.driver",
+                "com.sun.org.apache.xerces.internal.parsers.SAXParser");
         try {
             tFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
             tFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
             tFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+            //tFactory.setFeature(XMLConstants.ACCESS_EXTERNAL_SCHEMA, false);
             logger.info("TransformerFactory configured with FEATURE_SECURE_PROCESSING and without ACCESS_EXTERNAL_DTD/ACCESS_EXTERNAL_STYLESHEET");
         } catch (TransformerConfigurationException e) {
             logger.warning(String.format("TransformerConfigurationException while setup TransformerFactory - possible security issue: %s", e.getMessage()));
         }
+        try {
+            synchronized (PdfServlet.class) {
+                if (fopFactory == null) {
+                    fopFactory = FopFactory.newInstance(new File(".").toURI());
+
+                    // 🔑 Preload event-model.xml: Dummy Fop anlegen
+                    FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
+                    try (java.io.ByteArrayOutputStream dummyOut = new java.io.ByteArrayOutputStream()) {
+                        fopFactory.newFop(MIME_PDF, foUserAgent, dummyOut);
+                    } catch (Exception e) {
+                        logger.warning("FOP preload failed (can be ignored if once-only): " + e.getMessage());
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throw new ServletException("FOP init failed", e);
+        }
+
+
     }
 
     /**
@@ -60,7 +86,6 @@ public class PdfServlet extends HttpServlet {
         logger.log(Level.INFO,"doGet");
         try {
             response.setContentType("application/pdf");
-            FopFactory fopFactory = FopFactory.newInstance(new File(".").toURI());
             Fop fop = fopFactory.newFop(MIME_PDF, response.getOutputStream());
             Transformer transformer = tFactory.newTransformer();
             InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("samples/helloWorld.fo");
@@ -69,7 +94,7 @@ public class PdfServlet extends HttpServlet {
             transformer.transform(src, res);
             logger.log(Level.INFO,"Process complete");
         } catch (Exception ex) {
-            logger.log(Level.SEVERE,String.format("Error while processing fop transformation %s", ex.getMessage()));
+            logger.log(Level.SEVERE,String.format("Error while processing fop transformation %s", ex));
         }
     }
 
@@ -108,8 +133,6 @@ public class PdfServlet extends HttpServlet {
             response.setContentType("application/pdf");
             response.setHeader("Content-disposition", "attachment; filename=" + pdfFileName);
 
-            FopFactory fopFactory = FopFactory.newInstance(new File(".").toURI());
-
             FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
             // Construct fop with desired output format
             Fop fop = fopFactory.newFop(MIME_PDF, foUserAgent, response.getOutputStream());
@@ -128,8 +151,10 @@ public class PdfServlet extends HttpServlet {
             logger.log(Level.INFO,"Process complete");
 
         } catch (Exception ex) {
-            context.log(ex.getMessage(), ex);
-            logger.log(Level.SEVERE,String.format("Error while processing fop transformation %s", ex.getMessage()));
+            if (context != null) {
+                context.log(ex.getMessage(), ex);
+            }
+            logger.log(Level.SEVERE,String.format("Error while processing fop transformation %s", ex));
         }
     }
 
