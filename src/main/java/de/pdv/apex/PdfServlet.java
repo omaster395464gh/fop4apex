@@ -45,7 +45,6 @@ public class PdfServlet extends HttpServlet {
             tFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
             tFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
             tFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
-            //tFactory.setFeature(XMLConstants.ACCESS_EXTERNAL_SCHEMA, false);
             logger.info("TransformerFactory configured with FEATURE_SECURE_PROCESSING and without ACCESS_EXTERNAL_DTD/ACCESS_EXTERNAL_STYLESHEET");
         } catch (TransformerConfigurationException e) {
             logger.warning(String.format("TransformerConfigurationException while setup TransformerFactory - possible security issue: %s", e.getMessage()));
@@ -54,21 +53,22 @@ public class PdfServlet extends HttpServlet {
             synchronized (PdfServlet.class) {
                 if (fopFactory == null) {
                     fopFactory = FopFactory.newInstance(new File(".").toURI());
-
-                    // 🔑 Preload event-model.xml: Dummy Fop anlegen
-                    FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
-                    try (java.io.ByteArrayOutputStream dummyOut = new java.io.ByteArrayOutputStream()) {
-                        fopFactory.newFop(MIME_PDF, foUserAgent, dummyOut);
-                    } catch (Exception e) {
-                        logger.warning("FOP preload failed (can be ignored if once-only): " + e.getMessage());
-                    }
+                    fopPreload();
                 }
             }
         } catch (Exception e) {
             throw new ServletException("FOP init failed", e);
         }
+    }
 
-
+    // 🔑 Preload event-model.xml: Dummy Fop anlegen
+    private static void fopPreload() {
+        try (java.io.ByteArrayOutputStream dummyOut = new java.io.ByteArrayOutputStream()) {
+            FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
+            fopFactory.newFop(MIME_PDF, foUserAgent, dummyOut);
+        } catch (Exception e) {
+            logger.warning("FOP preload failed (can be ignored if once-only): " + e.getMessage());
+        }
     }
 
     /**
