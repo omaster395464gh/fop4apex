@@ -18,7 +18,7 @@
         <junit.version>6.0.2</junit.version>
         <batik.version>1.16</batik.version>
         <pdfbox.version>3.0.6</pdfbox.version>
-        <jettyVersion>12.1.5</jettyVersion>
+        <jettyVersion>12.1.6</jettyVersion>
         <sonar.organization>omaster395464gh</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
