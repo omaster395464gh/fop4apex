@@ -26,7 +26,7 @@ class PdfServletTest extends Mockito {
     @Mock private ServletOutputStream outputStream;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
