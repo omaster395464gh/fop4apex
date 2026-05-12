@@ -1,7 +1,6 @@
 package de.pdv.apex;
 
 import org.apache.commons.io.IOUtils;
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -14,6 +13,9 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.XMLConstants;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -22,13 +24,21 @@ import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 class PdfServletTest extends Mockito {
-    @Spy  private PdfServlet servlet;
-    @Mock private ServletConfig servletConfig;
-    @Mock private ServletContext servletContext;
-    @Mock private HttpServletRequest request;
-    @Mock private HttpServletResponse response;
-    @Mock private ServletOutputStream outputStream;
+    @Spy
+    private PdfServlet servlet;
+    @Mock
+    private ServletConfig servletConfig;
+    @Mock
+    private ServletContext servletContext;
+    @Mock
+    private HttpServletRequest request;
+    @Mock
+    private HttpServletResponse response;
+    @Mock
+    private ServletOutputStream outputStream;
 
     @BeforeEach
     void setUp() {
@@ -48,7 +58,7 @@ class PdfServletTest extends Mockito {
         when(response.getWriter()).thenReturn(new PrintWriter(new StringWriter()));
         servlet.doGet(request, response);
         System.out.println("Check for header %PDF-1.4%...");
-        byte[] b = {0x25,0x50,0x44,0x46,0x2D,0x31,0x2E,0x34,0x0A}; //
+        byte[] b = {0x25, 0x50, 0x44, 0x46, 0x2D, 0x31, 0x2E, 0x34, 0x0A}; //
         verify(outputStream, atLeastOnce()).write(b);
         System.out.println("Success!");
     }
@@ -69,7 +79,7 @@ class PdfServletTest extends Mockito {
         when(response.getWriter()).thenReturn(new PrintWriter(new StringWriter()));
         servlet.doPost(request, response);
         System.out.println("Check for header %PDF-1.4%...");
-        byte[] b = {0x25,0x50,0x44,0x46,0x2D,0x31,0x2E,0x34,0x0A}; //
+        byte[] b = {0x25, 0x50, 0x44, 0x46, 0x2D, 0x31, 0x2E, 0x34, 0x0A}; //
         verify(outputStream, atLeastOnce()).write(b);
         System.out.println("Success!");
     }
@@ -108,16 +118,43 @@ class PdfServletTest extends Mockito {
     }
 
     @Test
+    void createSecureTransformerFactoryWrapsUnsupportedSecureProcessing() throws Exception {
+        TransformerFactory factory = mock(TransformerFactory.class);
+        TransformerConfigurationException cause =
+                new TransformerConfigurationException("secure processing unsupported");
+        doThrow(cause).when(factory).setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+
+        IllegalStateException exception = assertThrows(IllegalStateException.class,
+                () -> PdfServlet.createSecureTransformerFactory(factory));
+
+        assertEquals("Secure XML processing is not supported by TransformerFactory", exception.getMessage());
+        assertSame(cause, exception.getCause());
+    }
+
+    @Test
+    void createSecureTransformerFactoryWrapsUnsupportedExternalAccessRestrictions() {
+        TransformerFactory factory = mock(TransformerFactory.class);
+        IllegalArgumentException cause = new IllegalArgumentException("attribute unsupported");
+        doThrow(cause).when(factory).setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+
+        IllegalStateException exception = assertThrows(IllegalStateException.class,
+                () -> PdfServlet.createSecureTransformerFactory(factory));
+
+        assertEquals("External XML access restrictions are not supported by TransformerFactory", exception.getMessage());
+        assertSame(cause, exception.getCause());
+    }
+
+    @Test
     void init() {
         when(servlet.getServletConfig()).thenReturn(servletConfig);
         assertNotNull(servlet);
-        assertDoesNotThrow( () -> servlet.init());
+        assertDoesNotThrow(() -> servlet.init());
     }
 
     @Test
     void getServletInfo() {
         when(servlet.getServletConfig()).thenReturn(servletConfig);
         String s = servlet.getServletInfo();
-        assertEquals("APEX FOP Server",s);
+        assertEquals("APEX FOP Server", s);
     }
 }

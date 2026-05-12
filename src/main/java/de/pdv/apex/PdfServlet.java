@@ -33,7 +33,10 @@ public class PdfServlet extends HttpServlet {
 
     private static TransformerFactory createSecureTransformerFactory() {
         TransformerFactory factory = TransformerFactory.newInstance();
+        return createSecureTransformerFactory(factory);
+    }
 
+    static TransformerFactory createSecureTransformerFactory(TransformerFactory factory) {
         try {
             factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
         } catch (TransformerConfigurationException e) {
