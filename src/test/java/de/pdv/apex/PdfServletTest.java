@@ -63,7 +63,6 @@ class PdfServletTest extends Mockito {
         when(request.getParameter("template")).thenReturn(xsltFileContent);
         when(request.getParameter("xml")).thenReturn(xmlFileContent);
         when(response.getWriter()).thenReturn(new PrintWriter(new StringWriter()));
-        servlet.init();
         servlet.doPost(request, response);
         System.out.println("Check for header %PDF-1.4%...");
         byte[] b = {0x25,0x50,0x44,0x46,0x2D,0x31,0x2E,0x34,0x0A}; //
@@ -75,7 +74,6 @@ class PdfServletTest extends Mockito {
     void init() {
         when(servlet.getServletConfig()).thenReturn(servletConfig);
         assertNotNull(servlet);
-        servlet.init();
         assertDoesNotThrow( () -> servlet.init());
     }
 

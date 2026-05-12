@@ -29,24 +29,29 @@ import static org.apache.xmlgraphics.util.MimeConstants.MIME_PDF;
 public class PdfServlet extends HttpServlet {
     private static final Logger logger = Logger.getLogger(PdfServlet.class.getName());
 
-    private static TransformerFactory tFactory = null;
+    private static final TransformerFactory TRANSFORMER_FACTORY =
+            createSecureTransformerFactory();
 
-    /**
-     * Init the servlet and setup TransformerFactory
-     */
-    @Override
-    public void init() {
-        if (tFactory == null) {
-            try {
-                tFactory = TransformerFactory.newInstance();
-                tFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-                tFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-                tFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
-                logger.info("TransformerFactory configured with FEATURE_SECURE_PROCESSING and without ACCESS_EXTERNAL_DTD/ACCESS_EXTERNAL_STYLESHEET");
-            } catch (TransformerConfigurationException e) {
-                logger.warning(String.format("TransformerConfigurationException while setup TransformerFactory - possible security issue: %s", e.getMessage()));
-            }
+    private static TransformerFactory createSecureTransformerFactory() {
+        TransformerFactory factory = TransformerFactory.newInstance();
+
+        try {
+            factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+        } catch (TransformerConfigurationException e) {
+            throw new IllegalStateException(
+                    "Secure XML processing is not supported by TransformerFactory", e);
         }
+
+        try {
+            factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+            factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+        } catch (IllegalArgumentException e) {
+            throw new IllegalStateException(
+                    "External XML access restrictions are not supported by TransformerFactory", e);
+        }
+        logger.info("TransformerFactory configured with FEATURE_SECURE_PROCESSING and without ACCESS_EXTERNAL_DTD/ACCESS_EXTERNAL_STYLESHEET");
+
+        return factory;
     }
 
     /**
@@ -66,7 +71,7 @@ public class PdfServlet extends HttpServlet {
             response.setContentType("application/pdf");
             FopFactory fopFactory = FopFactory.newInstance(new File(".").toURI());
             Fop fop = fopFactory.newFop(MIME_PDF, response.getOutputStream());
-            Transformer transformer = tFactory.newTransformer();
+            Transformer transformer = TRANSFORMER_FACTORY.newTransformer();
             InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("samples/helloWorld.fo");
             Source src = new StreamSource(inputStream);
             Result res = new SAXResult(fop.getDefaultHandler());
@@ -117,7 +122,7 @@ public class PdfServlet extends HttpServlet {
             FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
             // Construct fop with desired output format
             Fop fop = fopFactory.newFop(MIME_PDF, foUserAgent, response.getOutputStream());
-            Transformer transformer = tFactory.newTransformer(new StreamSource(new StringReader(templateFile)));
+            Transformer transformer = TRANSFORMER_FACTORY.newTransformer(new StreamSource(new StringReader(templateFile)));
             // Set the value of a <param> in the stylesheet
             transformer.setParameter("versionParam", "2.0");
 
