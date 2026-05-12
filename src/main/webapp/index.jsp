@@ -89,7 +89,7 @@ de.pdv.apex.level = ALL</pre>
 %>
 
     <h2>Server Info / Environment</h2>
-    <table role="grid">
+    <table>
         <thead>
         <tr>
             <th scope="col">Parameter</th>
