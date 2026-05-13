@@ -21,7 +21,6 @@ import java.util.logging.Logger;
 
 import static org.apache.xmlgraphics.util.MimeConstants.MIME_PDF;
 
-
 /**
  * @author oliver1
  */
