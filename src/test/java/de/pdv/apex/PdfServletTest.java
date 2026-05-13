@@ -26,7 +26,6 @@ import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
 class PdfServletTest extends Mockito {
     @Spy
     private PdfServlet servlet;
