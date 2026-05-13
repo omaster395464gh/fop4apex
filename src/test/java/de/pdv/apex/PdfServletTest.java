@@ -152,14 +152,12 @@ class PdfServletTest extends Mockito {
         when(servlet.getServletConfig()).thenReturn(servletConfig);
         assertNotNull(servlet);
         assertDoesNotThrow(() -> servlet.init());
-        assertDoesNotThrow(() -> servlet.init());
     }
 
     @Test
     void getServletInfo() {
         when(servlet.getServletConfig()).thenReturn(servletConfig);
         String s = servlet.getServletInfo();
-        assertEquals("APEX FOP Server", s);
         assertEquals("APEX FOP Server", s);
     }
 }
