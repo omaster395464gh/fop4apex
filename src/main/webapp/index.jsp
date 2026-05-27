@@ -1,7 +1,19 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.LinkedHashMap" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%!
+    private String html(String value) {
+        if (value == null) {
+            return "";
+        }
+        return value
+                .replace("&", "&amp;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+                .replace("\"", "&quot;")
+                .replace("'", "&#x27;");
+    }
+%>
 
 <!doctype html>
 <html lang="en" data-theme="dark">
@@ -10,7 +22,7 @@
     <meta http-equiv="Content-Type"  content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Apache Formatting Objects Processor integration for Oracle Application Express, converts xml and fop to pdf" />
-    <link rel="stylesheet" href="webjars/pico/css/pico.min.css" />
+    <link rel="stylesheet" href="css/pico.min.css">
     <title>Apache FOP for Oracle APEX</title>
 </head>
 <body>
@@ -48,11 +60,11 @@
         </tr>
         <tr>
             <th scope="row">Port</th>
-            <td><c:out value="${pageContext.request.serverPort}"/></td>
+            <td><%= html(String.valueOf(request.getServerPort())) %></td>
         </tr>
         <tr>
             <th scope="row">Script</th>
-            <td><c:out value="${pageContext.request.contextPath}"/>/pdf</td>
+            <td><%= html(request.getContextPath()) %>/pdf</td>
         </tr>
         <tr>
             <td>Timeout</td>
@@ -96,12 +108,16 @@ de.pdv.apex.level = ALL</pre>
             <th scope="col">Value</th>
         </tr>
         </thead>
-        <c:forEach var="property" items="${systemProperties}">
-            <tr>
-                <th scope="row"><c:out value="${property.key}"/></th>
-                <td><c:out value="${property.value}"/></td>
-            </tr>
-        </c:forEach>
+        <%
+            for (Map.Entry<String, String> property : systemProperties.entrySet()) {
+        %>
+        <tr>
+            <th scope="row"><%= html(property.getKey()) %></th>
+            <td><%= html(property.getValue()) %></td>
+        </tr>
+        <%
+            }
+        %>
     </table>
     <p>page built with <a href="https://picocss.com/">Pico.css</a>, fop conversion with <a href="https://xmlgraphics.apache.org/fop/">Apache FOP</a> </p>
 </main>

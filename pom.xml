@@ -18,6 +18,7 @@
         <junit.version>6.1.0</junit.version>
         <batik.version>1.16</batik.version>
         <pdfbox.version>3.0.7</pdfbox.version>
+        <picocss.version>2.1.1</picocss.version>
         <sonar.organization>omaster395464gh</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
@@ -28,12 +29,6 @@
             <artifactId>javax.servlet-api</artifactId>
             <version>4.0.1</version>
             <scope>provided</scope>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/javax.servlet/jstl -->
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-            <version>1.2</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -84,7 +79,6 @@
             </exclusions>
         </dependency>
 
-
         <!-- https://mvnrepository.com/artifact/net.bull.javamelody/javamelody-core  -->
         <dependency>
             <groupId>net.bull.javamelody</groupId>
@@ -93,13 +87,23 @@
             <scope>compile</scope>
         </dependency>
 
+        <!-- Source: https://mvnrepository.com/artifact/org.webjars.npm/picocss__pico -->
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>picocss__pico</artifactId>
+            <version>${picocss.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.webjars.bowergithub.picocss/pico -->
+        <!--
         <dependency>
             <groupId>org.webjars.bowergithub.picocss</groupId>
             <artifactId>pico</artifactId>
             <version>1.5.6</version>
             <scope>compile</scope>
         </dependency>
+        -->
 
         <!-- https://mvnrepository.com/artifact/com.github.librepdf/openpdf -->
         <!-- updates to 1.4 and 2.x currently not possible https://github.com/javamelody/javamelody/pull/1182 -->
@@ -121,6 +125,17 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.5.1</version>
+                <configuration>
+                    <webResources>
+                        <resource>
+                            <directory>${project.build.directory}/picocss/META-INF/resources/webjars/picocss__pico/${picocss.version}/css</directory>
+                            <targetPath>css</targetPath>
+                            <includes>
+                                <include>pico.min.css</include>
+                            </includes>
+                        </resource>
+                    </webResources>
+                </configuration>
             </plugin>
 
             <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-surefire-plugin -->
@@ -145,7 +160,7 @@
                 </executions>
                 <configuration>
                     <projectType>library</projectType>
-                    <schemaVersion>1.5</schemaVersion>
+                    <schemaVersion>1.6</schemaVersion>
                     <includeBomSerialNumber>true</includeBomSerialNumber>
                     <includeCompileScope>true</includeCompileScope>
                     <includeProvidedScope>true</includeProvidedScope>
@@ -192,6 +207,29 @@
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>11.0.26</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.8.1</version>
+                <executions>
+                    <execution>
+                        <id>unpack-picocss</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.webjars.npm</groupId>
+                                    <artifactId>picocss__pico</artifactId>
+                                    <version>${picocss.version}</version>
+                                    <outputDirectory>${project.build.directory}/picocss</outputDirectory>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
