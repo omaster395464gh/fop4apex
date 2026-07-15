@@ -200,7 +200,7 @@
             <plugin>
                 <groupId>com.google.cloud.tools</groupId>
                 <artifactId>jib-maven-plugin</artifactId>
-                <version>3.5.1</version>
+                <version>3.5.2</version>
                 <configuration>
                     <from>
                         <image>jetty:12.0-jdk17-alpine-eclipse-temurin</image>
