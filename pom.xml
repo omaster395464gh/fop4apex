@@ -10,6 +10,12 @@
     <name>fop4apex</name>
     <packaging>war</packaging>
     <url>https://www.pdv.de</url>
+    <scm>
+        <url>https://github.com/omaster395464gh/fop4apex</url>
+    </scm>
+    <issueManagement>
+        <url>https://github.com/omaster395464gh/fop4apex/issues</url>
+    </issueManagement>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
